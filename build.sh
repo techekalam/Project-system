@@ -9,9 +9,16 @@ if [ -z "$SECRET_KEY" ]; then
   export SECRET_KEY="build-temp-key-$(date +%s)"
 fi
 
+# Set BUILD_ENV so settings.py knows we are building and keeps db.sqlite3 in the root dir
+export BUILD_ENV="1"
+
 # Run migrations
 echo "Running database migrations..."
 python manage.py migrate --noinput
+
+# Seed demo users
+echo "Seeding demo data..."
+python manage.py seed_demo || true
 
 # Collect static files
 echo "Collecting static files..."

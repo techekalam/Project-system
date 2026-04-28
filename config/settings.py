@@ -94,7 +94,8 @@ else:
     # Vercel serverless filesystem is read-only except /tmp.
     # Copy the bundled db.sqlite3 to /tmp at runtime so writes (sessions, etc.) work.
     _db_path = BASE_DIR / 'db.sqlite3'
-    if os.environ.get('VERCEL'):
+    # Only use /tmp during runtime, not during the build process
+    if os.environ.get('VERCEL') and not os.environ.get('BUILD_ENV'):
         _tmp_db = Path('/tmp/db.sqlite3')
         if _db_path.exists() and not _tmp_db.exists():
             import shutil
