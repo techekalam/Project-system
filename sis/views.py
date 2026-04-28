@@ -38,8 +38,14 @@ from .models import Course, Enrollment, FeeInvoice, Payment, Result, StudentProf
 
 
 def _ensure_role_groups_exist():
-    for name in [ROLE_REGISTRY, ROLE_FINANCE, ROLE_LECTURER, ROLE_STUDENT]:
-        Group.objects.get_or_create(name=name)
+    try:
+        for name in [ROLE_REGISTRY, ROLE_FINANCE, ROLE_LECTURER, ROLE_STUDENT]:
+            Group.objects.get_or_create(name=name)
+    except Exception as e:
+        # Silently fail if groups can't be created (e.g., during migrations)
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.warning(f"Could not create role groups: {e}")
 
 def _verification_signer() -> TimestampSigner:
     return TimestampSigner(salt="sis.student.verify")

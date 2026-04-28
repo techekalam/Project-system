@@ -23,8 +23,13 @@
       "dest": "config/wsgi.py"
     }
   ],
+  "buildCommand": "bash build.sh",
+  "outputDirectory": ".",
   "env": {
     "DJANGO_SETTINGS_MODULE": "config.settings",
-    "PYTHONUNBUFFERED": "1"
-  }
+    "PYTHONUNBUFFERED": "1",
+    "SECRET_KEY": "@SECRET_KEY"
+  },
+  "envPath": ".env"
 }
+
