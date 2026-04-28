@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+  <div class="grid">
+    <div class="card">
+      <div class="muted">Signed in as</div>
+      <div class="kpi">{{ request.user.get_full_name|default:request.user.username }}</div>
+      <div style="margin-top:8px;">
+        {% if roles %}
+          {% for r in roles %}<span class="pill">{{ r }}</span> {% endfor %}
+        {% else %}
+          <span class="pill">No role assigned</span>
+        {% endif %}
+      </div>
+      {% if student_profile %}
+        <div class="muted" style="margin-top:10px;">Student ID: <strong>{{ student_profile.student_id }}</strong></div>
+      {% endif %}
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0;">Required modules</h3>
+      <ul>
+        <li>User login/authentication (Django auth)</li>
+        <li>Student registration</li>
+        <li>Course registration & enrollment</li>
+        <li>Fee/payment tracking</li>
+        <li>Result management</li>
+        <li>Report generation</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px;">
+    <h3 style="margin-top:0;">Quick actions</h3>
+    <a class="btn primary" href="{% url 'sis:student_create' %}">Register student</a>
+    <a class="btn" href="{% url 'sis:course_create' %}">Create course</a>
+    <a class="btn" href="{% url 'sis:enrollment_create' %}">Enroll student</a>
+    <a class="btn" href="{% url 'sis:fee_create' %}">Create invoice</a>
+    <a class="btn" href="{% url 'sis:result_record' %}">Record result</a>
+  </div>
+{% endblock %}
+

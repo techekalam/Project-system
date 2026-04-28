@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Course {{ course.code }}{% endblock %}
+{% block content %}
+  <div class="card">
+    <h2 style="margin-top:0;">{{ course.code }} - {{ course.title }}</h2>
+    <div><strong>Credits:</strong> {{ course.credit_units }}</div>
+    <div><strong>Lecturer:</strong> {{ course.lecturer|default:"—" }}</div>
+    <div><strong>Status:</strong> {% if course.is_active %}<span class="pill">Active</span>{% else %}<span class="pill">Inactive</span>{% endif %}</div>
+    <div class="actions">
+      <a class="btn" href="{% url 'sis:course_edit' pk=course.pk %}">Edit</a>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px;">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <h3 style="margin:0;">Enrollments</h3>
+      <a class="btn" href="{% url 'sis:enrollment_create' %}">Enroll student</a>
+    </div>
+    <table style="margin-top:10px;">
+      <thead><tr><th>Student</th><th>Year</th><th>Semester</th><th>Status</th></tr></thead>
+      <tbody>
+        {% for e in enrollments %}
+          <tr>
+            <td>{{ e.student.student_id }} - {{ e.student.user.get_full_name|default:e.student.user.username }}</td>
+            <td>{{ e.year }}</td>
+            <td>{{ e.semester }}</td>
+            <td><span class="pill">{{ e.status }}</span></td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="4" class="muted">No enrollments for this course.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Student {{ student.student_id }}{% endblock %}
+{% block content %}
+  <div class="grid">
+    <div class="card">
+      <h2 style="margin-top:0;">{{ student.student_id }}</h2>
+      <div><strong>Name:</strong> {{ student.user.get_full_name|default:student.user.username }}</div>
+      <div><strong>Email:</strong> {{ student.user.email|default:"—" }}</div>
+      <div><strong>Phone:</strong> {{ student.phone|default:"—" }}</div>
+      <div><strong>Address:</strong> {{ student.address|default:"—" }}</div>
+      <div class="muted" style="margin-top:8px;">Created: {{ student.created_at }}</div>
+      <div class="actions">
+        <a class="btn" href="{% url 'sis:student_edit' pk=student.pk %}">Edit</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0;">Quick actions</h3>
+      <a class="btn" href="{% url 'sis:enrollment_create' %}">Enroll</a>
+      <a class="btn" href="{% url 'sis:fee_create' %}">Create invoice</a>
+      <a class="btn" href="{% url 'sis:result_record' %}">Record result</a>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px;">
+    <h3 style="margin-top:0;">Enrollments</h3>
+    <table>
+      <thead><tr><th>Course</th><th>Year</th><th>Semester</th><th>Status</th></tr></thead>
+      <tbody>
+        {% for e in enrollments %}
+          <tr>
+            <td>{{ e.course.code }} - {{ e.course.title }}</td>
+            <td>{{ e.year }}</td>
+            <td>{{ e.semester }}</td>
+            <td><span class="pill">{{ e.status }}</span></td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="4" class="muted">No enrollments.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card" style="margin-top:12px;">
+    <h3 style="margin-top:0;">Fee invoices</h3>
+    <table>
+      <thead><tr><th>ID</th><th>Year</th><th>Term</th><th>Due</th><th>Status</th></tr></thead>
+      <tbody>
+        {% for inv in invoices %}
+          <tr>
+            <td>#{{ inv.id }}</td>
+            <td>{{ inv.year }}</td>
+            <td>{{ inv.term }}</td>
+            <td>{{ inv.amount_due }}</td>
+            <td><span class="pill">{{ inv.status }}</span></td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="5" class="muted">No invoices.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card" style="margin-top:12px;">
+    <h3 style="margin-top:0;">Results</h3>
+    <table>
+      <thead><tr><th>Course</th><th>CA</th><th>Exam</th><th>Total</th><th>Grade</th></tr></thead>
+      <tbody>
+        {% for r in results %}
+          <tr>
+            <td>{{ r.enrollment.course.code }} - {{ r.enrollment.course.title }}</td>
+            <td>{{ r.ca_score }}</td>
+            <td>{{ r.exam_score }}</td>
+            <td><strong>{{ r.total }}</strong></td>
+            <td><span class="pill">{{ r.grade }}</span></td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="5" class="muted">No results recorded.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+

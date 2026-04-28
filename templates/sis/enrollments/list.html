@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Enrollments{% endblock %}
+{% block content %}
+  <div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <h2 style="margin:0;">Enrollments</h2>
+      <a class="btn primary" href="{% url 'sis:enrollment_create' %}">New enrollment</a>
+    </div>
+    <form method="get" style="margin-top:10px; display:flex; gap:8px; align-items:end; flex-wrap:wrap;">
+      <div>
+        <label>Search</label>
+        <input name="q" value="{{ q|default:'' }}" placeholder="Student ID / course code / title" />
+      </div>
+      <div>
+        <label>Year</label>
+        <input name="year" value="{{ year|default:'' }}" placeholder="e.g. 2026" />
+      </div>
+      <div>
+        <label>Semester</label>
+        <input name="semester" value="{{ semester|default:'' }}" placeholder="1" />
+      </div>
+      <div>
+        <label>Status</label>
+        <select name="status">
+          <option value="">Any</option>
+          <option value="ENROLLED" {% if status == "ENROLLED" %}selected{% endif %}>ENROLLED</option>
+          <option value="DROPPED" {% if status == "DROPPED" %}selected{% endif %}>DROPPED</option>
+        </select>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button class="btn" type="submit">Filter</button>
+        <a class="btn" href="{% url 'sis:enrollment_list' %}">Reset</a>
+        <a class="btn" href="{% url 'sis:enrollment_export_csv' %}?q={{ q|urlencode }}&year={{ year|urlencode }}&semester={{ semester|urlencode }}&status={{ status|urlencode }}">Export CSV</a>
+      </div>
+    </form>
+    <table style="margin-top:10px;">
+      <thead><tr><th>Student</th><th>Course</th><th>Year</th><th>Sem</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+        {% for e in enrollments %}
+          <tr>
+            <td>{{ e.student.student_id }}</td>
+            <td>{{ e.course.code }} - {{ e.course.title }}</td>
+            <td>{{ e.year }}</td>
+            <td>{{ e.semester }}</td>
+            <td><span class="pill">{{ e.status }}</span></td>
+            <td><a href="{% url 'sis:enrollment_edit' pk=e.pk %}">Edit</a></td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="6" class="muted">No enrollments yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+

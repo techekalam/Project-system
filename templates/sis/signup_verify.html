@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Approve student{% endblock %}
+{% block content %}
+  <div class="card" style="max-width:720px;">
+    <h2 style="margin-top:0;">Approve student signup</h2>
+    <p class="muted">Review details, then approve to activate login.</p>
+    <div class="grid">
+      <div class="card">
+        <div><strong>Student ID:</strong> {{ student.student_id }}</div>
+        <div><strong>Username:</strong> {{ student.user.username }}</div>
+        <div><strong>Name:</strong> {{ student.user.get_full_name|default:"—" }}</div>
+        <div><strong>Email:</strong> {{ student.user.email|default:"—" }}</div>
+      </div>
+      <div class="card">
+        <div><strong>Verified:</strong> {% if student.is_verified %}<span class="pill">YES</span>{% else %}<span class="pill">NO</span>{% endif %}</div>
+        <div><strong>Login active:</strong> {% if student.user.is_active %}<span class="pill">YES</span>{% else %}<span class="pill">NO</span>{% endif %}</div>
+      </div>
+    </div>
+
+    <form method="post" style="margin-top:12px;">
+      {% csrf_token %}
+      <button class="btn primary" type="submit">Approve & activate</button>
+      <a class="btn" href="{% url 'sis:home' %}">Cancel</a>
+    </form>
+  </div>
+{% endblock %}
+

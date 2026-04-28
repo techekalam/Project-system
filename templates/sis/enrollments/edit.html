@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Edit enrollment{% endblock %}
+{% block content %}
+  <div class="card">
+    <h2 style="margin-top:0;">Edit enrollment</h2>
+    <p class="muted">
+      {{ enrollment.student.student_id }} → {{ enrollment.course.code }} ({{ enrollment.year }}/{{ enrollment.semester }})
+    </p>
+    <form method="post">
+      {% include "sis/_form.html" %}
+      <div class="actions">
+        <button class="btn primary" type="submit">Save changes</button>
+        <a class="btn" href="{% url 'sis:enrollment_list' %}">Cancel</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}
+

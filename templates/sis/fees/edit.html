@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Edit invoice #{{ invoice.id }}{% endblock %}
+{% block content %}
+  <div class="card">
+    <h2 style="margin-top:0;">Edit invoice</h2>
+    <p class="muted">
+      Invoice <strong>#{{ invoice.id }}</strong> — {{ invoice.student.student_id }} ({{ invoice.year }} / {{ invoice.term }})
+    </p>
+    <form method="post">
+      {% include "sis/_form.html" %}
+      <div class="actions">
+        <button class="btn primary" type="submit">Save changes</button>
+        <a class="btn" href="{% url 'sis:fee_list' %}">Cancel</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}
+

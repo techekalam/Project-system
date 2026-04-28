@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Create course{% endblock %}
+{% block content %}
+  <div class="card">
+    <h2 style="margin-top:0;">Create course</h2>
+    <form method="post">
+      {% include "sis/_form.html" %}
+      <div class="actions">
+        <button class="btn primary" type="submit">Create course</button>
+        <a class="btn" href="{% url 'sis:course_list' %}">Cancel</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}
+

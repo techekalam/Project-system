@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Student signup{% endblock %}
+{% block content %}
+  <div class="card" style="max-width:640px;">
+    <h2 style="margin-top:0;">Student signup</h2>
+    <p class="muted">
+      Your account will be created as <strong>pending</strong>. An administrator/registry staff must approve it before you can log in.
+    </p>
+    <form method="post">
+      {% include "sis/_form.html" %}
+      <div class="actions">
+        <button class="btn primary" type="submit">Submit for approval</button>
+        <a class="btn" href="{% url 'login' %}">Back to login</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}
+

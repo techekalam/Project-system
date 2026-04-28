@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Fee summary{% endblock %}
+{% block content %}
+  <div class="grid">
+    <div class="card">
+      <div class="muted">Total due</div>
+      <div class="kpi">{{ total_due }}</div>
+    </div>
+    <div class="card">
+      <div class="muted">Total paid (sum of payments)</div>
+      <div class="kpi">{{ total_paid }}</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px;">
+    <h3 style="margin-top:0;">Invoices by status</h3>
+    <table>
+      <thead><tr><th>Status</th><th>Count</th></tr></thead>
+      <tbody>
+        {% for row in by_status %}
+          <tr><td><span class="pill">{{ row.status }}</span></td><td>{{ row.c }}</td></tr>
+        {% empty %}
+          <tr><td colspan="2" class="muted">No invoices.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Reports{% endblock %}
+{% block content %}
+  <div class="card">
+    <h2 style="margin-top:0;">Reports</h2>
+    <ul>
+      <li>
+        <a href="{% url 'sis:report_fee_summary' %}">Fee summary</a>
+        <span class="muted">—</span>
+        <a href="{% url 'sis:report_fee_summary_csv' %}">CSV</a>
+      </li>
+      <li>
+        <a href="{% url 'sis:report_results_summary' %}">Results summary (by course)</a>
+        <span class="muted">—</span>
+        <a href="{% url 'sis:report_results_summary_csv' %}">CSV</a>
+      </li>
+    </ul>
+    <p class="muted">Tip: use your browser Print to save as PDF.</p>
+  </div>
+{% endblock %}
+

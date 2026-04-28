@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Students{% endblock %}
+{% block content %}
+  <div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <h2 style="margin:0;">Students</h2>
+      <a class="btn primary" href="{% url 'sis:student_create' %}">Register student</a>
+    </div>
+    <form method="get" style="margin-top:10px; display:flex; gap:8px; align-items:end; flex-wrap:wrap;">
+      <div>
+        <label>Search</label>
+        <input name="q" value="{{ q|default:'' }}" placeholder="Student ID / name / username / email" />
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button class="btn" type="submit">Filter</button>
+        <a class="btn" href="{% url 'sis:student_list' %}">Reset</a>
+        <a class="btn" href="{% url 'sis:student_export_csv' %}?q={{ q|urlencode }}">Export CSV</a>
+      </div>
+    </form>
+    <table style="margin-top:10px;">
+      <thead>
+        <tr>
+          <th>Student ID</th>
+          <th>Name</th>
+          <th>Username</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in students %}
+          <tr>
+            <td><strong>{{ s.student_id }}</strong></td>
+            <td>{{ s.user.get_full_name|default:"—" }}</td>
+            <td class="muted">{{ s.user.username }}</td>
+            <td><a href="{% url 'sis:student_detail' pk=s.pk %}">View</a></td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="4" class="muted">No students yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+

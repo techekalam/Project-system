@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Results summary{% endblock %}
+{% block content %}
+  <div class="card">
+    <h2 style="margin-top:0;">Results summary (by course)</h2>
+    <table style="margin-top:10px;">
+      <thead><tr><th>Course</th><th>Records</th><th>Average total</th></tr></thead>
+      <tbody>
+        {% for c in by_course %}
+          <tr>
+            <td><strong>{{ c.enrollment__course__code }}</strong> - {{ c.enrollment__course__title }}</td>
+            <td>{{ c.n }}</td>
+            <td>{{ c.avg_total|floatformat:2 }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="3" class="muted">No results recorded.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+

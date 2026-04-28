@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Record payment{% endblock %}
+{% block content %}
+  <div class="card">
+    <h2 style="margin-top:0;">Record payment</h2>
+    <p class="muted">
+      Invoice <strong>#{{ invoice.id }}</strong> for
+      <strong>{{ invoice.student.student_id }}</strong> —
+      Due: {{ invoice.amount_due }} | Paid: {{ invoice.amount_paid }} | Balance: {{ invoice.balance }}
+    </p>
+    <form method="post">
+      {% include "sis/_form.html" %}
+      <div class="actions">
+        <button class="btn primary" type="submit">Save payment</button>
+        <a class="btn" href="{% url 'sis:fee_list' %}">Cancel</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}
+

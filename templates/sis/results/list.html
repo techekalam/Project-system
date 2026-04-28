@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Results{% endblock %}
+{% block content %}
+  <div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <h2 style="margin:0;">Results</h2>
+      <a class="btn primary" href="{% url 'sis:result_record' %}">Record result</a>
+    </div>
+    <form method="get" style="margin-top:10px; display:flex; gap:8px; align-items:end; flex-wrap:wrap;">
+      <div>
+        <label>Search</label>
+        <input name="q" value="{{ q|default:'' }}" placeholder="Student ID / course code / title" />
+      </div>
+      <div>
+        <label>Course code</label>
+        <input name="course" value="{{ course|default:'' }}" placeholder="e.g. CSC101" />
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button class="btn" type="submit">Filter</button>
+        <a class="btn" href="{% url 'sis:result_list' %}">Reset</a>
+        <a class="btn" href="{% url 'sis:result_export_csv' %}?q={{ q|urlencode }}&course={{ course|urlencode }}">Export CSV</a>
+      </div>
+    </form>
+    <table style="margin-top:10px;">
+      <thead><tr><th>Student</th><th>Course</th><th>CA</th><th>Exam</th><th>Total</th><th>Grade</th><th>Recorded</th><th></th></tr></thead>
+      <tbody>
+        {% for r in results %}
+          <tr>
+            <td>{{ r.enrollment.student.student_id }}</td>
+            <td>{{ r.enrollment.course.code }}</td>
+            <td>{{ r.ca_score }}</td>
+            <td>{{ r.exam_score }}</td>
+            <td><strong>{{ r.total }}</strong></td>
+            <td><span class="pill">{{ r.grade }}</span></td>
+            <td class="muted">{{ r.recorded_at }}</td>
+            <td><a href="{% url 'sis:result_edit' pk=r.pk %}">Edit</a></td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="8" class="muted">No results recorded.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+

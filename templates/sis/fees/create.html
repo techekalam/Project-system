@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Create invoice{% endblock %}
+{% block content %}
+  <div class="card">
+    <h2 style="margin-top:0;">Create invoice</h2>
+    <form method="post">
+      {% include "sis/_form.html" %}
+      <div class="actions">
+        <button class="btn primary" type="submit">Create invoice</button>
+        <a class="btn" href="{% url 'sis:fee_list' %}">Cancel</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}
+

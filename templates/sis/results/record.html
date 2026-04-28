@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Record result{% endblock %}
+{% block content %}
+  <div class="card">
+    <h2 style="margin-top:0;">Record result</h2>
+    <form method="post">
+      {% include "sis/_form.html" %}
+      <div class="actions">
+        <button class="btn primary" type="submit">Save result</button>
+        <a class="btn" href="{% url 'sis:result_list' %}">Cancel</a>
+      </div>
+    </form>
+    <p class="muted" style="margin-top:10px;">
+      CA is out of 40, Exam is out of 60.
+    </p>
+  </div>
+{% endblock %}
+

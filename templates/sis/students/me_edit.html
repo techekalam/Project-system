@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Edit my profile{% endblock %}
+{% block content %}
+  <div class="card">
+    <h2 style="margin-top:0;">Edit my profile</h2>
+    <p class="muted">Student ID: <strong>{{ student.student_id }}</strong></p>
+    <form method="post">
+      {% include "sis/_form.html" %}
+      <div class="actions">
+        <button class="btn primary" type="submit">Save changes</button>
+        <a class="btn" href="{% url 'sis:my_profile' %}">Cancel</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}
+

@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Fees{% endblock %}
+{% block content %}
+  <div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <h2 style="margin:0;">Fee invoices</h2>
+      <a class="btn primary" href="{% url 'sis:fee_create' %}">Create invoice</a>
+    </div>
+    <form method="get" style="margin-top:10px; display:flex; gap:8px; align-items:end; flex-wrap:wrap;">
+      <div>
+        <label>Search</label>
+        <input name="q" value="{{ q|default:'' }}" placeholder="Student ID or username" />
+      </div>
+      <div>
+        <label>Year</label>
+        <input name="year" value="{{ year|default:'' }}" placeholder="e.g. 2026" />
+      </div>
+      <div>
+        <label>Status</label>
+        <select name="status">
+          <option value="">Any</option>
+          <option value="UNPAID" {% if status == "UNPAID" %}selected{% endif %}>UNPAID</option>
+          <option value="PARTIAL" {% if status == "PARTIAL" %}selected{% endif %}>PARTIAL</option>
+          <option value="PAID" {% if status == "PAID" %}selected{% endif %}>PAID</option>
+        </select>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button class="btn" type="submit">Filter</button>
+        <a class="btn" href="{% url 'sis:fee_list' %}">Reset</a>
+        <a class="btn" href="{% url 'sis:fee_export_csv' %}?q={{ q|urlencode }}&year={{ year|urlencode }}&status={{ status|urlencode }}">Export CSV</a>
+      </div>
+    </form>
+    <table style="margin-top:10px;">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Student</th>
+          <th>Year</th>
+          <th>Term</th>
+          <th>Due</th>
+          <th>Paid</th>
+          <th>Balance</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for inv in invoices %}
+          <tr>
+            <td>#{{ inv.id }}</td>
+            <td>{{ inv.student.student_id }}</td>
+            <td>{{ inv.year }}</td>
+            <td>{{ inv.term }}</td>
+            <td>{{ inv.amount_due }}</td>
+            <td>{{ inv.amount_paid }}</td>
+            <td><strong>{{ inv.balance }}</strong></td>
+            <td><span class="pill">{{ inv.status }}</span></td>
+            <td>
+              <a href="{% url 'sis:fee_edit' pk=inv.pk %}">Edit</a>
+              <span class="muted">|</span>
+              <a href="{% url 'sis:payment_create' pk=inv.pk %}">Record payment</a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="9" class="muted">No invoices yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+

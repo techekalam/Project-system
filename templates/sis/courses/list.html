@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Courses{% endblock %}
+{% block content %}
+  <div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <h2 style="margin:0;">Courses</h2>
+      <a class="btn primary" href="{% url 'sis:course_create' %}">Create course</a>
+    </div>
+    <form method="get" style="margin-top:10px; display:flex; gap:8px; align-items:end; flex-wrap:wrap;">
+      <div>
+        <label>Search</label>
+        <input name="q" value="{{ q|default:'' }}" placeholder="Code or title" />
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button class="btn" type="submit">Filter</button>
+        <a class="btn" href="{% url 'sis:course_list' %}">Reset</a>
+        <a class="btn" href="{% url 'sis:course_export_csv' %}?q={{ q|urlencode }}">Export CSV</a>
+      </div>
+    </form>
+    <table style="margin-top:10px;">
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Title</th>
+          <th>Credits</th>
+          <th>Lecturer</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in courses %}
+          <tr>
+            <td><strong>{{ c.code }}</strong></td>
+            <td>{{ c.title }}</td>
+            <td>{{ c.credit_units }}</td>
+            <td class="muted">{{ c.lecturer|default:"—" }}</td>
+            <td><a href="{% url 'sis:course_detail' pk=c.pk %}">View</a></td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="5" class="muted">No courses yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+

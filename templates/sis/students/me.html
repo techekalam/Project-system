@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}My profile{% endblock %}
+{% block content %}
+  <div class="card">
+    <h2 style="margin-top:0;">My profile</h2>
+    <div><strong>Student ID:</strong> {{ student.student_id }}</div>
+    <div><strong>Name:</strong> {{ student.user.get_full_name|default:student.user.username }}</div>
+    <div><strong>Email:</strong> {{ student.user.email|default:"—" }}</div>
+    <div><strong>Phone:</strong> {{ student.phone|default:"—" }}</div>
+    <div><strong>Address:</strong> {{ student.address|default:"—" }}</div>
+    <div class="actions">
+      <a class="btn" href="{% url 'sis:my_profile_edit' %}">Edit my profile</a>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px;">
+    <h3 style="margin-top:0;">My enrollments</h3>
+    <table>
+      <thead><tr><th>Course</th><th>Year</th><th>Semester</th><th>Status</th></tr></thead>
+      <tbody>
+        {% for e in enrollments %}
+          <tr>
+            <td>{{ e.course.code }} - {{ e.course.title }}</td>
+            <td>{{ e.year }}</td>
+            <td>{{ e.semester }}</td>
+            <td><span class="pill">{{ e.status }}</span></td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="4" class="muted">No enrollments yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card" style="margin-top:12px;">
+    <h3 style="margin-top:0;">My fees</h3>
+    <table>
+      <thead><tr><th>ID</th><th>Year</th><th>Term</th><th>Due</th><th>Paid</th><th>Balance</th><th>Status</th></tr></thead>
+      <tbody>
+        {% for inv in invoices %}
+          <tr>
+            <td>#{{ inv.id }}</td>
+            <td>{{ inv.year }}</td>
+            <td>{{ inv.term }}</td>
+            <td>{{ inv.amount_due }}</td>
+            <td>{{ inv.amount_paid }}</td>
+            <td><strong>{{ inv.balance }}</strong></td>
+            <td><span class="pill">{{ inv.status }}</span></td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="7" class="muted">No invoices.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card" style="margin-top:12px;">
+    <h3 style="margin-top:0;">My results</h3>
+    <table>
+      <thead><tr><th>Course</th><th>CA</th><th>Exam</th><th>Total</th><th>Grade</th></tr></thead>
+      <tbody>
+        {% for r in results %}
+          <tr>
+            <td>{{ r.enrollment.course.code }} - {{ r.enrollment.course.title }}</td>
+            <td>{{ r.ca_score }}</td>
+            <td>{{ r.exam_score }}</td>
+            <td><strong>{{ r.total }}</strong></td>
+            <td><span class="pill">{{ r.grade }}</span></td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="5" class="muted">No results yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+

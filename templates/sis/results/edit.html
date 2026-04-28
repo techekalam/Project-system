@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Edit result{% endblock %}
+{% block content %}
+  <div class="card">
+    <h2 style="margin-top:0;">Edit result</h2>
+    <p class="muted">
+      {{ result.enrollment.student.student_id }} — {{ result.enrollment.course.code }}
+    </p>
+    <form method="post">
+      {% include "sis/_form.html" %}
+      <div class="actions">
+        <button class="btn primary" type="submit">Save changes</button>
+        <a class="btn" href="{% url 'sis:result_list' %}">Cancel</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}
+
