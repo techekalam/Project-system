@@ -27,7 +27,9 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-yg*^7%#l)5%-w5z!b7+2)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
+# Build ALLOWED_HOSTS from environment variable and add Vercel domains
+_allowed_hosts = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,.vercel.app').split(',')
+ALLOWED_HOSTS = [h.strip() for h in _allowed_hosts if h.strip()]
 
 
 # Application definition
@@ -163,4 +165,10 @@ if not DEBUG:
     SECURE_HSTS_PRELOAD = config('SECURE_HSTS_PRELOAD', default=True, cast=bool)
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
-    CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='').split(',') if config('CSRF_TRUSTED_ORIGINS', default='') else []
+    
+    # CSRF trusted origins - default includes vercel.app
+    _csrf_origins = config('CSRF_TRUSTED_ORIGINS', default='https://*.vercel.app,https://localhost').split(',')
+    CSRF_TRUSTED_ORIGINS = [o.strip() for o in _csrf_origins if o.strip()]
+    
+    # Trust X-Forwarded-Proto header from Vercel
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
