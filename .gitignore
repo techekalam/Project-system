@@ -9,14 +9,11 @@ __pycache__/
 dist/
 build/
 .DS_Store
-db.sqlite3
 *.log
 *.pot
 .env
 .env.local
 .idea/
-staticfiles/
 node_modules/
 .vercel/
 .next/
-
