@@ -17,5 +17,10 @@ python manage.py migrate --noinput
 echo "Collecting static files..."
 python manage.py collectstatic --noinput --clear
 
-echo "Build process completed successfully!"
+# Ensure the SQLite database is readable for runtime copy to /tmp
+if [ -f "db.sqlite3" ]; then
+  chmod 644 db.sqlite3
+  echo "Database prepared for Vercel deployment."
+fi
 
+echo "Build process completed successfully!"

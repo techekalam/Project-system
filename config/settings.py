@@ -91,10 +91,19 @@ if config('USE_POSTGRES', default=False, cast=bool):
         }
     }
 else:
+    # Vercel serverless filesystem is read-only except /tmp.
+    # Copy the bundled db.sqlite3 to /tmp at runtime so writes (sessions, etc.) work.
+    _db_path = BASE_DIR / 'db.sqlite3'
+    if os.environ.get('VERCEL'):
+        _tmp_db = Path('/tmp/db.sqlite3')
+        if _db_path.exists() and not _tmp_db.exists():
+            import shutil
+            shutil.copy(str(_db_path), str(_tmp_db))
+        _db_path = _tmp_db
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
+            'NAME': str(_db_path),
         }
     }
 
